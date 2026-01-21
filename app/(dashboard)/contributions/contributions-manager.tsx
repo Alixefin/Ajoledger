@@ -80,12 +80,13 @@ export function ContributionsManager({
       const existingContribution = contributionMap.get(memberId)
 
       if (existingContribution) {
+        const updateData = {
+          amount_paid: amount,
+          paid_at: new Date().toISOString(),
+        }
         const { error } = await supabase
           .from('contributions')
-          .update({
-            amount_paid: amount,
-            paid_at: new Date().toISOString(),
-          })
+          .update(updateData)
           .eq('id', existingContribution.id)
 
         if (error) throw error

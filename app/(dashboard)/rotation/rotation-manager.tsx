@@ -168,9 +168,10 @@ export function RotationManager({ initialMembers, settings, payouts }: RotationM
       }))
 
       for (const update of updates) {
+        const updateData = { rotation_order: update.rotation_order }
         const { error } = await supabase
           .from('members')
-          .update({ rotation_order: update.rotation_order })
+          .update(updateData)
           .eq('id', update.id)
 
         if (error) throw error

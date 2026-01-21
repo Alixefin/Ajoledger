@@ -153,10 +153,11 @@ export function MembersList({ initialMembers, monthlyContribution }: MembersList
     try {
       if (editingMember) {
         const passportUrl = await uploadPhoto(editingMember.id)
+        const updateData = { ...validation.data, passport_url: passportUrl }
 
         const { error } = await supabase
           .from('members')
-          .update({ ...validation.data, passport_url: passportUrl })
+          .update(updateData)
           .eq('id', editingMember.id)
 
         if (error) throw error
@@ -181,9 +182,10 @@ export function MembersList({ initialMembers, monthlyContribution }: MembersList
         if (photoFile && newMember) {
           const passportUrl = await uploadPhoto(newMember.id)
           if (passportUrl) {
+            const photoUpdate = { passport_url: passportUrl }
             await supabase
               .from('members')
-              .update({ passport_url: passportUrl })
+              .update(photoUpdate)
               .eq('id', newMember.id)
             newMember.passport_url = passportUrl
           }
